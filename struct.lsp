@@ -2,6 +2,10 @@
 
 (in-package :ly)
 
+;;; TODO
+;;; remove-entry
+;;; remove-start-time
+
 ;; ** struct class
 
 (defclass struct (base-object)
@@ -183,6 +187,7 @@
 
 ;; *** struct-section
 (defmethod struct-section ((st struct) start-time end-time)
+  (update-empty st)
   (let* ((starts '())
 	 (durs '())
 	 (indices '())

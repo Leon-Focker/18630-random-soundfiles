@@ -31,6 +31,15 @@
 (defun section-val (time &rest times-and-values)
   (funcall (apply #'sections times-and-values) time))
 
+;; *** special-interleave
+;;; (special-interleave '(a b c) '((0 x) (1 y) (2 z)))
+;;; => '(a 0 b 1 c 2)
+;;; (special-interleave '(a b c) '((0 x) (1 y) (2 z)) 1)
+;;; => '(a x b y c z)
+(defun special-interleave (normal-list nested-list &optional (n 0))
+  (interleave normal-list
+	      (mapcar #'(lambda (x) (nth-mod n x)) nested-list)))
+
 ;; *** wsound
 (defmacro wsound (name &body body)
   (let* ((body-string (write-to-string body))
