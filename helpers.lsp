@@ -56,6 +56,29 @@
 		  :force-recomputation nil)
        ,@body)))
 
+;; *** unpack
+(defmacro unpack_multichan_file (input output channels-from channels-to)
+  `(loop for channel from ,channels-from to ,channels-to
+	 do (with-sound (:header-type clm::mus-riff :sampling-rate 48000
+			 :output (format nil "~a~a-channel_~a~a"
+					 *bleeps-src-dir* ,output channel ".wav")
+			 :channels 1 :play nil
+			 :force-recomputation nil)
+	      (samp0 (format nil "~a~a~a" *bleeps-src-dir* ,input ".wav") 0
+		     :out-channels 1 :channel channel))))
+
+;; *** mashup
+;;; amp-list is bound to input-list (could be made more clear i guess)
+(defmacro mashup (start end input-list duration-list order
+		  &optional (pan-list '(45)) (amp-list '(1)))
+  `(fplay ,start ,end
+     (file (nth-mod (nth-mod i ,order) ,input-list))
+     (duration (nth-mod i ,duration-list))
+     (rhythm duration)
+     (start time)
+     (amp (nth-mod (nth-mod i ,order) ,amp-list))
+     (degree (nth-mod i ,pan-list))))
+
 ;; *** generate-section
 ;;; depth is the n for (nth n (data *struct*))
 ;;; duration-var is the name for the duration-list to be used in body

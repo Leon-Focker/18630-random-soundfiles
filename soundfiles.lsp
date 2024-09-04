@@ -83,4 +83,44 @@
 (setf (gethash :recov2 *soundfiles*)
       (load-from-file "/E/recov/store-F12402176.txt"))
 
+(create-sfl :recov3)
+
+(setf (gethash :recov3 *soundfiles*)
+      (load-from-file "/E/recov/store-F12508040.txt"))
+
+(create-sfl :recov4)
+
+(setf (gethash :recov4 *soundfiles*)
+      (load-from-file "/E/recov/store-F14068992.txt"))
+
+(create-sfl :recov5)
+
+(setf (gethash :recov5 *soundfiles*)
+      (load-from-file "/E/recov/store-F17415896.txt"))
+
+(create-sfl :recov6)
+
+(setf (gethash :recov6 *soundfiles*)
+      (load-from-file "/E/recov/store-F17820512.txt"))
+
+(create-sfl :recov7)
+
+(setf (gethash :recov7 *soundfiles*)
+      (load-from-file "/E/recov/store-F19562768.txt"))
+
+(create-sfl :recov8)
+
+(setf (gethash :recov8 *soundfiles*)
+      (load-from-file "/E/recov/store-F20566936.txt"))
+
+(create-sfl :recov9)
+
+(setf (gethash :recov9 *soundfiles*)
+      (load-from-file "/E/recov/store-F120043520.txt"))
+
+(create-sfl :recov10)
+
+(setf (gethash :recov10 *soundfiles*)
+      (load-from-file "/E/recov/store-F169254232.txt"))
+
 ;; EOF soundfiles.lsp

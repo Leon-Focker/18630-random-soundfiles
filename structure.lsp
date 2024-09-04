@@ -35,11 +35,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-rthm *Struct* 240 '(1/12 1/6))
-(add-hits *struct* 240 '(8))
-(add-hits *struct* 244 '(7))
-(add-hits *struct* 248 '(5))
-(add-hits *struct* 255 '(2))
+(add-rthm *struct* 240 '(1/12 1/6 2/9))
+(add-hits *struct* 240 '(3))
+
+
+
+;(add-hits *struct* 244 '(7))
+;(add-hits *struct* 248 '(5))
+;(add-hits *struct* 255 '(2))
 
 
 ;; Ende
