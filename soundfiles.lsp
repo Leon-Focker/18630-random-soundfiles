@@ -5,6 +5,12 @@
 
 (in-package :ly)
 
+;; ** stille
+
+(setf (gethash :stille *soundfiles*)
+      (make-stored-file 'stille "samples/stille.wav"
+			:directory *bleeps-src-dir*))
+
 ;; ** percussive sounds
 
 (create-sfl :percussive)
