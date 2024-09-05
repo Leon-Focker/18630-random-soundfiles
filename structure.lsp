@@ -38,7 +38,24 @@
 (add-rthm *struct* 240 '(1/12 1/6 2/9))
 (add-hits *struct* 240 '(3))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-rthm *struct* 272 '(2/9 2/9 1/9))
+(add-hits *struct* 272 '(3))
+
+(add-hits *struct* 290 '(6 6 6 7))
+
+(add-rthm *struct* 295 '(2/9 198/900 1/9))
+
+(add-rthm *struct* 305 '(2/9 198/900 11/90))
+(add-hits *struct* 305 '(6 6 6 11))
+
+(add-hits *struct* 310 '(5))
+
+(add-hits *struct* 310 '(4 4 4 11))
+
+(add-rthm *struct* 320 '(2/90))
+(add-hits *struct* 320 '(3 3 3 3))
 
 ;(add-hits *struct* 244 '(7))
 ;(add-hits *struct* 248 '(5))

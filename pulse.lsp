@@ -4,7 +4,7 @@
 
 ;; ** bass samples
 
-(wsound "pulse/pulse1"
+#+nil(wsound "pulse/pulse1"
   (let* ((start-time 0)
 	 (end-time 30)
 	 (sounds (data (gethash :percussive *soundfiles*))))
@@ -25,7 +25,7 @@
 
 ;; ** exploring other samples (meh!)
 
-(loop for k from 0 to 50 by 10 do
+#+nil(loop for k from 0 to 50 by 10 do
   (wsound (name-with-var "pulse/pulse_recov" k)
     (let* ((start-time 0)
 	   (end-time 30)
@@ -69,7 +69,7 @@
        (end-time 240)		    
        (sounds (data (gethash :recov *soundfiles*))))
   (multiple-value-bind (starts durs hit-list rthm-list)
-      (struct-section *struct* 0 240)
+      (struct-section *struct* start-time end-time)
     (declare (ignore durs))
     
     (wsound "pulse/digital_pulse"
@@ -93,5 +93,42 @@
 	     (+ (dry-wet 0.5 0.2 curve2) (* (dry-wet 0.5 0.8 curve2) (- 1 accent2))))
 	(amp-env '(0 1  .99 1  1 0))
 	(degree 0 90)))))
+
+(let* ((start-time 272)
+       (end-time 320)		    
+       (sounds (data (gethash :recov *soundfiles*))))
+  (multiple-value-bind (starts durs hit-list rthm-list)
+      (struct-section *struct* start-time end-time)
+    (declare (ignore durs))
+    
+    (wsound "pulse/digital_pulse_2"
+      (fplay start-time end-time
+;;;;  now also a blackbox
+	(time start-time (+ start-time .1212) start-time)
+	(curve line line2 line3)
+	(duration 0.001)
+	(srt 1 1 2)
+	(rhythm (apply #'section-val time
+		       (special-interleave starts rthm-list))
+		(apply #'section-val time2
+		       (special-interleave starts rthm-list 1))
+		(apply #'section-val time3
+		       (special-interleave starts rthm-list 2)))
+	(hits (apply #'section-val time
+		     (special-interleave starts hit-list))
+	      (apply #'section-val time2
+		     (special-interleave starts hit-list 1))
+	      (apply #'section-val time3
+		     (special-interleave starts hit-list 2)))
+;;;;  blackbox
+	(accent (/ (get-beat-prox (/ (- time start-time)  hits  rhythm) 4) 4)
+		(/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm) 4) 4)
+		(/ (get-beat-prox (/ (- time3 start-time) hits3 rhythm) 4) 4))
+	(sound (nth-mod 11 sounds))
+	(amp (+ .1 (* .9 (- 1 accent)))
+	     (+ .1 (* .9 (- 1 accent2)))
+	     (+ .1 (* .9 (- 1 accent3))))
+	(amp-env '(0 1  .99 1  1 0))
+	(degree 0 90 45)))))
 
 ;; EOF pulse.lsp

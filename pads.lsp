@@ -112,9 +112,10 @@
 
 ;; ** automation
 
-;;; 
+;; *** dreamy 1
+
 (let* ((start-time 240)
-       (end-time 280)		    
+       (end-time 272)		    
        (sounds (data (gethash :recov *soundfiles*))))
   (multiple-value-bind (starts durs hit-list rthm-list)
       (struct-section *struct* start-time end-time)
@@ -156,101 +157,63 @@
 		       (name-with-var "pads/stems/dreamy_1" 20)
 		       0 5)
 
-;; *** Sub 1
-(let* ((start-time 200)
-       (end-time 240)		    
-       (sounds (data (gethash :recov *soundfiles*))))
-  (multiple-value-bind (starts durs hit-list rthm-list)
-      (struct-section *struct* start-time end-time)
-    (declare (ignore durs))
-    
-    (wsound (name-with-var "pads/sub_1" 20)
+;; ** games
+
+(let ((k 0))
+  (wsound (name-with-var "pads/game_1" k)
+    (let* ((start-time 0)
+	   (end-time 25)
+	   (sounds (append (data (gethash :recov5 *soundfiles*))
+			   (list (gethash :stille *soundfiles*)))))
       (fplay start-time end-time
 ;;;;  rhythm 
 	(duration .5)
-	(rhythm (apply #'section-val time
-		       (special-interleave starts rthm-list)))
-	(hits (apply #'section-val time
-		     (special-interleave starts hit-list)))
-;;;;  blackbox
-	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4))
-	(sound (nth-mod 38 sounds))
-	(amp (if (> accent .7) (- 1 accent) 0))
-	(amp-env '(0 0  1 1  99 1  100 0))
-	(degree 45)))))
-
-;; *** Sub 2
-(let* ((start-time 240)
-       (end-time 280)	    
-       (sounds (data (gethash :recov *soundfiles*))))
-  (multiple-value-bind (starts durs hit-list rthm-list)
-      (struct-section *struct* start-time end-time)
-    (declare (ignore durs))
-    
-    (wsound (name-with-var "pads/sub_2" 20)
-      (fplay start-time end-time
-;;;;  rhythm 
-	(duration .5)
-	(rhythm (apply #'section-val time
-		       (special-interleave starts rthm-list 2)))
-	(hits (apply #'section-val time
-		     (special-interleave starts hit-list 1)))
-;;;;  blackbox
-	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4))
-	(sound (nth-mod 38 sounds))
-	(amp (if (> accent .7) (- 1 accent) 0))
-	(amp-env '(0 0  1 1  99 1  100 0))
-	(degree 45)))))
-
-
-;;; same with recov 2
-(let* ((start-time 200)
-       (end-time 260)		    
-       (sounds (data (gethash :recov2 *soundfiles*))))
-  (multiple-value-bind (starts durs hit-list rthm-list)
-      (struct-section *struct* start-time end-time)
-    (declare (ignore durs))
-    
-    (wsound (name-with-var "pads/second_groove2" 20)
-      (fplay start-time end-time
-;;;;  rhythm 
-	(duration .5)
-	(rhythm (apply #'section-val time
-		       (special-interleave starts rthm-list))
-		(apply #'section-val time2
-		       (special-interleave starts rthm-list 1)))
-	(hits (apply #'section-val time
-		     (special-interleave starts hit-list))
-	      (apply #'section-val time2
-		     (special-interleave starts hit-list 1)))
+	(rhythm (section-val time
+			     0 1/12
+			     14 3/12
+			     18.5 4/9)
+		(section-val time2
+			     0 1/6
+			     14 3/12
+			     18.5 4/9))
+        (hits (section-val time
+			   0 8
+			   7 11
+			   13.5 5
+			   18.5 11)
+	      (section-val time2
+			   0 11
+			   8 7
+			   13.5 13
+			   18.5 11))
 ;;;;  blackbox
 	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
 		(/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
-	(degree 0 0)
-	(out-channels 6)
-	(sound nil nil)
-	(stub (cond ((> accent .7) (setf degree (* 0 60)
-					 sound (nth-mod 39 sounds)))
-		    ((> accent2 .5) (setf degree (* 2 60)
-					  sound (nth-mod 37 sounds)))
-		    (t (setf degree (* 4 60) sound (nth-mod 35 sounds))))
-	      (cond ((> accent2 .7) (setf degree2 (* 1 60)
-					  sound2 (nth-mod 38 sounds)))
-		    ((> accent2 .2) (setf degree2 (* 3 60)
-					  sound2 (nth-mod 36 sounds)))
-		    (t (setf degree2 (* 5 60) sound2 (nth-mod 35 sounds)))))
+	(sound-n (section-val time
+			      0    (if (< accent .7) 15 19)
+			      1.7  (cond ((< accent .7) 17) ((< accent .9) 15) (t 19))
+			      4    (cond ((< accent .7) 19) ((< accent .9) 18) (t 15))
+			      5    (if (< accent .5) 21 18)
+			      9    (if (< accent .7) 24 25)
+			      12   (if (< accent .5) 26 25)
+			      14   (if (< accent .3) 26 27)
+			      22.5 (if (< accent .3) 34 26))
+		 (section-val time2
+			      0    (if (< accent2 .7) 15 19)
+			      1.7  (cond ((< accent2 .7) 18) ((< accent2 .9) 19) (t 18))
+			      3    (cond ((< accent2 .7) 17) ((< accent2 .9) 15) (t 19))
+			      4.5  (if (< accent2 .7) 33 19)
+			      7    23
+			      9    (if (< accent2 .7) 26 24)
+			      14   (if (< accent2 .3) (1- (length sounds)) 26)
+			      22   (if (< accent2 .3) 26 18)))
+	(sound (nth-mod sound-n sounds)
+	       (nth-mod sound-n2 sounds))
 	(amp (- 1 accent) (- 1 accent2))
-	(amp-env '(0 0  1 1  99 1  100 0))))))
+	(amp-env '(0 0  1 1  99 1  100 0))
+	(degree 0 90)))))
 
-;;; unpack 6chan file into 6 mono files:
-(unpack_multichan_file (name-with-var "pads/first_groove" 20)
-		       (name-with-var "pads/stems/first_groove" 20)
-		       0 5)
-
-;;; get channel 4 and 5
-(unpack_multichan_file (name-with-var "pads/second_groove" 20)
-		       (name-with-var "pads/stems/second_groove" 20)
-		       4 5)
+;; gamey  28 30 31 32 33
 
 
 ;; EOF pads.lsp
