@@ -75,7 +75,7 @@
      (file (nth-mod (nth-mod i ,order) ,input-list))
      (duration (nth-mod i ,duration-list))
      (rhythm duration)
-     (start time)
+     (start (mod time (soundfile-duration file)))
      (amp (nth-mod (nth-mod i ,order) ,amp-list))
      (degree (nth-mod i ,pan-list))))
 
