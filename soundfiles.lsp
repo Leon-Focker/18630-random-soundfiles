@@ -187,7 +187,6 @@
    :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
 			    0.5)))))
 
-
 ;; ** recov
 
 (create-sfl :recov)
