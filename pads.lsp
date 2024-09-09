@@ -159,6 +159,7 @@
 
 ;; ** games
 
+;; *** game_1
 (let ((k 0))
   (wsound (name-with-var "pads/game_1" k)
     (let* ((start-time 0)
@@ -213,7 +214,117 @@
 	(amp-env '(0 0  1 1  99 1  100 0))
 	(degree 0 90)))))
 
+
+;; *** game_2
+(let ((k 0))
+  (wsound (name-with-var "pads/game_2" k)
+    (let* ((start-time 0)
+	   (end-time 40)
+	   (sounds (append (data (gethash :recov5 *soundfiles*))
+			   (list (gethash :stille *soundfiles*)))))
+      (fplay start-time end-time
+;;;;  rhythm 
+	(duration .5)
+	(rhythm (section-val time
+			     0 1/12
+			     20 2/12
+			     30 4/9)
+		(section-val time2
+			     0 1/6
+			     28 3/12
+			     30 4/9))
+        (hits (section-val time
+			   0 8
+			   7 11
+			   18 5
+			   30 11)
+	      (section-val time2
+			   0 11
+			   12 7
+			   21.5 13
+			   30 11))
+;;;;  blackbox
+	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
+		(/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
+	(sound-n (section-val time
+			      0    (if (< accent .7) 15 19)
+			      1.7  (cond ((< accent .7) 17) ((< accent .9) 15) (t 19))
+			      4    (cond ((< accent .7) 19) ((< accent .9) 18) (t 15))
+			      5    (if (< accent .5) 12 18)			      
+			      13   (if (< accent .7) 24 25)
+			      18   (if (< accent .5) 26 25)
+			      24   (if (< accent .3) 26 27)
+			      35   (if (< accent .3) 13 26))
+		 (section-val time2
+			      0    (if (< accent2 .7) 15 19)
+			      1.7  (cond ((< accent2 .7) 18) ((< accent2 .9) 19) (t 18))
+			      3    (cond ((< accent2 .7) 17) ((< accent2 .9) 15) (t 19))
+			      4.5  (if (< accent2 .7) 33 19)
+			      7    23
+			      13   (if (< accent2 .7) 26 24)
+			      28   (if (< accent2 .3) (1- (length sounds)) 26)
+			      33   (if (< accent2 .3) 26 18)))
+	(sound (nth-mod sound-n sounds)
+	       (nth-mod sound-n2 sounds))
+	(amp (- 1 accent) (- 1 accent2))
+	(amp-env '(0 0  1 1  99 1  100 0))
+	(degree 0 90)))))
+
+
+;; *** game pulse
+
+(wsound "pads/game_2_pulse"
+  (let* ((start-time 0)
+	 (end-time 40)
+	 (sounds (data (gethash :recov *soundfiles*))))
+    (fplay start-time end-time
+;;;;  rhythm 
+      (duration .001)
+      (rhythm (section-val time
+			   0 1/12
+			   20 2/12
+			   30 4/9)
+	      (section-val time2
+			   0 1/6
+			   28 3/12
+			   30 4/9))
+      (hits (section-val time
+			 0 8
+			 7 11
+			 18 5
+			 30 11)
+	    (section-val time2
+			 0 11
+			 12 7
+			 21.5 13
+			 30 11))
+;;;;  blackbox
+      (accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
+	      (/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
+      (sound (nth-mod 11 sounds))
+      (amp (- 1 accent) (- 1 accent2))
+      (amp-env '(0 0  1 1  99 1  100 0))
+      (degree 0 90))))
+
 ;; gamey  28 30 31 32 33
 
 
+;; ** sound hierarchy
+
+;;; generating some....stuff. fast paced, change soundfiles
+(wsound "sounds_test_trans_7"
+  (let* ((sounds1 (data (gethash :recov7 *soundfiles*)))
+	 (sounds2 (data (gethash :recov5 *soundfiles*)))
+	 (sorted1 '())
+	 (sorted2 '()))
+    (setf sorted1 (subseq (sort (copy-list sounds1) #'(lambda (x y) (> (transient x) (transient y))))
+			  0 50))
+    (setf sorted2 (subseq (sort (copy-list sounds2) #'(lambda (x y) (< (flatness x) (flatness y))))
+			  0 35))
+    (fplay 0 5
+      (rhythm 0.01)
+      (sound (nth-mod i sorted1))
+      (duration (* rhythm 3))
+      (degree (random 90)))))
+ 
 ;; EOF pads.lsp
