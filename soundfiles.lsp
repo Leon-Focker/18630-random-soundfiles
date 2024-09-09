@@ -77,6 +77,117 @@
    :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
 			    0.5)))))
 
+;; ** drum loops
+
+(create-sfl :loops)
+
+(probe-analyse-store :loops
+  (folder-to-stored-file-list
+   (gethash :loops *soundfiles*)
+   (format nil "~a~a" *bleeps-src-dir* "samples/loops/")
+   :analyse t
+   :auto-map nil
+   :auto-scale-mapping nil
+   :remap nil
+   ;;:fft-size 4096
+   :f1 #'(lambda (sf) (/ (log (/ (+ (dominant-frequency sf)
+			       (centroid sf))
+			    2))
+		    12000))
+   :f2 #'(lambda (sf) (* (expt (transient sf) 0.7)
+		    0.6))
+   :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
+			    0.5)))))
+
+;; ** kicks
+
+(create-sfl :kicks)
+
+(probe-analyse-store :kicks
+  (folder-to-stored-file-list
+   (gethash :kicks *soundfiles*)
+   (format nil "~a~a" *bleeps-src-dir* "samples/kicks/")
+   :analyse t
+   :auto-map nil
+   :auto-scale-mapping nil
+   :remap nil
+   ;;:fft-size 4096
+   :f1 #'(lambda (sf) (/ (log (/ (+ (dominant-frequency sf)
+			       (centroid sf))
+			    2))
+		    12000))
+   :f2 #'(lambda (sf) (* (expt (transient sf) 0.7)
+		    0.6))
+   :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
+			    0.5)))))
+
+;; ** snares
+
+(create-sfl :snares)
+
+(probe-analyse-store :snares
+  (folder-to-stored-file-list
+   (gethash :snares *soundfiles*)
+   (format nil "~a~a" *bleeps-src-dir* "samples/snares/")
+   :analyse t
+   :auto-map nil
+   :auto-scale-mapping nil
+   :remap nil
+   ;;:fft-size 4096
+   :f1 #'(lambda (sf) (/ (log (/ (+ (dominant-frequency sf)
+			       (centroid sf))
+			    2))
+		    12000))
+   :f2 #'(lambda (sf) (* (expt (transient sf) 0.7)
+		    0.6))
+   :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
+			    0.5)))))
+
+;; ** hats
+
+(create-sfl :hats)
+
+(probe-analyse-store :hats
+  (folder-to-stored-file-list
+   (gethash :hats *soundfiles*)
+   (format nil "~a~a" *bleeps-src-dir* "samples/hats/")
+   :analyse t
+   :auto-map nil
+   :auto-scale-mapping nil
+   :remap nil
+   ;;:fft-size 4096
+   :f1 #'(lambda (sf) (/ (log (/ (+ (dominant-frequency sf)
+			       (centroid sf))
+			    2))
+		    12000))
+   :f2 #'(lambda (sf) (* (expt (transient sf) 0.7)
+		    0.6))
+   :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
+			    0.5)))))
+
+;; ** pads
+
+(create-sfl :pads)
+
+(probe-analyse-store :pads
+  (folder-to-stored-file-list
+   (gethash :pads *soundfiles*)
+   (format nil "~a~a" *bleeps-src-dir* "samples/pads/")
+   :analyse t
+   :auto-map nil
+   :auto-scale-mapping nil
+   :remap nil
+   ;;:fft-size 4096
+   :f1 #'(lambda (sf) (/ (log (/ (+ (dominant-frequency sf)
+			       (centroid sf))
+			    2))
+		    12000))
+   :f2 #'(lambda (sf) (* (expt (transient sf) 0.7)
+		    0.6))
+   :f3 #'(lambda (sf) (- 1 (expt (smoothness sf)
+			    0.5)))))
+
+
 ;; ** recov
 
 (create-sfl :recov)
