@@ -227,43 +227,43 @@
 	(duration .5)
 	(rhythm (section-val time
 			     0 1/12
-			     20 2/12
-			     30 4/9)
+			     21 2/12
+			     31 4/9)
 		(section-val time2
 			     0 1/6
-			     28 3/12
-			     30 4/9))
+			     29 3/12
+			     31 4/9))
         (hits (section-val time
 			   0 8
-			   7 11
-			   18 5
-			   30 11)
+			   8 11
+			   19 5
+			   31 11)
 	      (section-val time2
 			   0 11
-			   12 7
-			   21.5 13
-			   30 11))
+			   13 7
+			   22.5 13
+			   31 11))
 ;;;;  blackbox
 	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
 		(/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
 	(sound-n (section-val time
 			      0    (if (< accent .7) 15 19)
-			      1.7  (cond ((< accent .7) 17) ((< accent .9) 15) (t 19))
-			      4    (cond ((< accent .7) 19) ((< accent .9) 18) (t 15))
-			      5    (if (< accent .5) 12 18)			      
-			      13   (if (< accent .7) 24 25)
+			      2.7  (cond ((< accent .7) 17) ((< accent .9) 15) (t 19))
+			      5    (cond ((< accent .7) 19) ((< accent .9) 18) (t 15))
+			      6    (if (< accent .5) 12 18)			      
+			      14   (if (< accent .7) 24 25)
 			      18   (if (< accent .5) 26 25)
-			      24   (if (< accent .3) 26 27)
-			      35   (if (< accent .3) 13 26))
+			      25   (if (< accent .3) 26 27)
+			      36   (if (< accent .3) 13 26))
 		 (section-val time2
 			      0    (if (< accent2 .7) 15 19)
-			      1.7  (cond ((< accent2 .7) 18) ((< accent2 .9) 19) (t 18))
-			      3    (cond ((< accent2 .7) 17) ((< accent2 .9) 15) (t 19))
-			      4.5  (if (< accent2 .7) 33 19)
-			      7    23
-			      13   (if (< accent2 .7) 26 24)
-			      28   (if (< accent2 .3) (1- (length sounds)) 26)
-			      33   (if (< accent2 .3) 26 18)))
+			      2.7  (cond ((< accent2 .7) 18) ((< accent2 .9) 19) (t 18))
+			      4    (cond ((< accent2 .7) 17) ((< accent2 .9) 15) (t 19))
+			      5.5  (if (< accent2 .7) 33 19)
+			      6    23
+			      14   (if (< accent2 .7) 26 24)
+			      29   (if (< accent2 .3) (1- (length sounds)) 26)
+			      34   (if (< accent2 .3) 26 18)))
 	(sound (nth-mod sound-n sounds)
 	       (nth-mod sound-n2 sounds))
 	(amp (- 1 accent) (- 1 accent2))
@@ -282,22 +282,22 @@
       (duration .001)
       (rhythm (section-val time
 			   0 1/12
-			   20 2/12
-			   30 4/9)
+			   21 2/12
+			   31 4/9)
 	      (section-val time2
 			   0 1/6
-			   28 3/12
-			   30 4/9))
+			   29 3/12
+			   31 4/9))
       (hits (section-val time
 			 0 8
-			 7 11
-			 18 5
-			 30 11)
+			 8 11
+			 19 5
+			 31 11)
 	    (section-val time2
 			 0 11
-			 12 7
-			 21.5 13
-			 30 11))
+			 13 7
+			 22.5 13
+			 31 11))
 ;;;;  blackbox
       (accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
 	      (/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
