@@ -162,4 +162,42 @@
 	(amp-env '(0 1  .99 1  1 0))
 	(degree 0 90 45)))))
 
+;; *** pulse 2 additional
+(let* ((start-time 272)
+       (end-time 320)		    
+       (sounds (data (gethash :recov5 *soundfiles*))))
+  (multiple-value-bind (starts durs hit-list rthm-list)
+      (struct-section *struct* start-time end-time)
+    (declare (ignore durs))
+    
+    (wsound "pulse/digital_pulse_2_add"
+      (fplay start-time end-time
+;;;;  now also a blackbox
+	(time start-time (+ start-time .1212) start-time)
+	(curve line line2 line3)
+	(duration 0.001)
+	(srt .25 .25 .5)
+	(rhythm (apply #'section-val time
+		       (special-interleave starts rthm-list))
+		(apply #'section-val time2
+		       (special-interleave starts rthm-list 1))
+		(apply #'section-val time3
+		       (special-interleave starts rthm-list 2)))
+	(hits (apply #'section-val time
+		     (special-interleave starts hit-list))
+	      (apply #'section-val time2
+		     (special-interleave starts hit-list 1))
+	      (apply #'section-val time3
+		     (special-interleave starts hit-list 2)))
+;;;;  blackbox
+	(accent (/ (get-beat-prox (/ (- time start-time)  hits  rhythm) 4) 4)
+		(/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm) 4) 4)
+		(/ (get-beat-prox (/ (- time3 start-time) hits3 rhythm) 4) 4))
+	(sound (nth-mod 30 sounds))
+	(amp (+ .1 (* .9 (- 1 accent)))
+	     (+ .1 (* .9 (- 1 accent2)))
+	     (+ .1 (* .9 (- 1 accent3))))
+	(amp-env '(0 1  .99 1  1 0))
+	(degree 0 90 45)))))
+
 ;; EOF pulse.lsp
