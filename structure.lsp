@@ -61,8 +61,27 @@
 ;(add-hits *struct* 248 '(5))
 ;(add-hits *struct* 255 '(2))
 
-
 ;; Ende
 (add-start-time *struct* 600)
+
+;; ** a struct for drums
+
+(defparameter *drums-struct* (make-struct 'drums))
+
+(add-hits *drums-struct* 0   '(8))
+(add-rthm *drums-struct* 0   '(0.05))
+
+(add-rthm *drums-struct* 10  '(0.025))
+
+(add-rthm *drums-struct* 25  '(0.01))
+
+(add-hits *drums-struct* 40  '(11))
+(add-rthm *drums-struct* 40  '(0.025))
+
+(add-hits *drums-struct* 50  '(7))
+(add-hits *drums-struct* 52  '(6))
+(add-hits *drums-struct* 55  '(5))
+(add-hits *drums-struct* 57  '(4))
+
 
 ;; EOF structure.lsp
