@@ -77,6 +77,28 @@
     ;;(out-channels 4)
     (degree 0 90)))
 
+;; *** Sub
+(wsound "drums/sub_evolving"
+  (let ((sounds (data (gethash :recov *soundfiles*))))
+    (fplay 0 48
+      (rhythm .05)
+      (hits 8)
+      (metrum (* rhythm 3))
+      (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+      (sound (nth-mod 38 sounds))
+      (on (cond ((>= accent 5/6) 1)
+		((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+		(t (if (>= (mod time .5) .25) 1 0))))
+      (start (mod (cond ((>= accent 5/6) 0)
+			((>= accent 3/6) 2)
+			(t 5))
+		  (soundfile-duration (path sound))))
+      (duration (* rhythm 4))
+      (amp (* (expt accent 2) on))
+      (amp-env '(0 0  1 1  33 1  100 0))
+      ;;(out-channels 4)
+      (degree 0 90))))
+
 ;; ** slowdown
 
 ;; *** pulse slowdown
