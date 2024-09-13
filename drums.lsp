@@ -146,28 +146,52 @@
     (degree 0 90)))
 
 ;; *** noise
-(loop for k in '(7 8 9 10 11) do
-  (wsound (name-with-var "drums/noise_evolving" k)
-    (let ((files '("/E/code/new/stille.wav"
-		   "/E/code/new/pads/groove__RECOV5_50.wav"
-		   "/E/code/new/pads/groove__RECOV5_40.wav"
-		   "/E/code/new/pads/groove__RECOV5_30.wav"
-		   "/E/code/new/pads/groove__RECOV5_20.wav"
-		   "/E/code/new/pads/groove__RECOV5_10.wav")))
+(loop for f in '(1 2 4) do
+  (loop for k in '(7 8 9 10 11) do
+    (wsound (name-with-var "drums/noise_evolving" f k)
+      (let ((files '("/E/code/new/stille.wav"
+		     "/E/code/new/pads/groove__RECOV5_50.wav"
+		     "/E/code/new/pads/groove__RECOV5_40.wav"
+		     "/E/code/new/pads/groove__RECOV5_30.wav"
+		     "/E/code/new/pads/groove__RECOV5_20.wav"
+		     "/E/code/new/pads/groove__RECOV5_10.wav")))
+	(fplay 0 48
+	  (rhythm .1)			; 0.5
+	  (hits k)
+	  (metrum (* rhythm 3))
+	  (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+	  (file (nth-mod f files))
+	  (on (cond ((>= accent 5/6) 1)
+		    ((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+		    (t (if (>= (mod time .5) .25) 1 0))))
+	  (start (mod (cond ((>= accent 5/6) 0)
+			    ((>= accent 3/6) 2)
+			    (t 5))
+		      (soundfile-duration file)))
+	  (duration (* rhythm 1))	; 4
+	  (amp (* 1 on))
+	  (amp-env '(0 0  1 1  33 1  100 0))
+	  (out-channels 1)
+	  (degree 0))))))
+
+;; *** Sub 2
+(loop for k in '(3 4 5 6 7 8) do
+  (wsound (name-with-var "drums/sub2_evolving" k)
+    (let ((sounds (data (gethash :recov *soundfiles*))))
       (fplay 0 48
-	(rhythm .1) ; 0.5
+	(rhythm .1)			; 0.5
 	(hits k)
 	(metrum (* rhythm 3))
 	(accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
-	(file (nth-mod 1 files))
+	(sound (nth-mod 38 sounds))
 	(on (cond ((>= accent 5/6) 1)
 		  ((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
 		  (t (if (>= (mod time .5) .25) 1 0))))
 	(start (mod (cond ((>= accent 5/6) 0)
 			  ((>= accent 3/6) 2)
 			  (t 5))
-		    (soundfile-duration file)))
-	(duration (* rhythm 1)) ; 4
+		    (soundfile-duration (path sound))))
+	(duration (* rhythm 1))		; 4
 	(amp (* 1 on))
 	(amp-env '(0 0  1 1  33 1  100 0))
 	(out-channels 1)
