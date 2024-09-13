@@ -102,26 +102,27 @@
       (degree 0 90))))
 
 ;; *** Sub
-(wsound "drums/sub_evolving_11"
-  (let ((sounds (data (gethash :recov *soundfiles*))))
-    (fplay 0 48
-      (rhythm .05)
-      (hits 11)
-      (metrum (* rhythm 3))
-      (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
-      (sound (nth-mod 38 sounds))
-      (on (cond ((>= accent 5/6) 1)
-		((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
-		(t (if (>= (mod time .5) .25) 1 0))))
-      (start (mod (cond ((>= accent 5/6) 0)
-			((>= accent 3/6) 2)
-			(t 5))
-		  (soundfile-duration (path sound))))
-      (duration (* rhythm 4))
-      (amp (* (expt accent 2) on))
-      (amp-env '(0 0  1 1  33 1  100 0))
-      ;;(out-channels 4)
-      (degree 0 90))))
+(loop for k in '(8 9 11) do
+  (wsound (name-with-var "drums/sub_evolving" k)
+    (let ((sounds (data (gethash :recov *soundfiles*))))
+      (fplay 0 48
+	(rhythm .05)
+	(hits k)
+	(metrum (* rhythm 3))
+	(accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+	(sound (nth-mod 38 sounds))
+	(on (cond ((>= accent 5/6) 1)
+		  ((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+		  (t (if (>= (mod time .5) .25) 1 0))))
+	(start (mod (cond ((>= accent 5/6) 0)
+			  ((>= accent 3/6) 2)
+			  (t 5))
+		    (soundfile-duration (path sound))))
+	(duration (* rhythm 4))
+	(amp (* (expt accent 2) on))
+	(amp-env '(0 0  1 1  33 1  100 0))
+	;;(out-channels 4)
+	(degree 0 90)))))
 
 ;; *** game evolving
 (wsound "drums/game_evolving_7"
@@ -378,28 +379,6 @@
       (amp-env '(0 0  1 1  33 1  100 0))
       (degree 0 90))))
 
-;; ** drum samples
-;;; meh
-#+nil(wsound "drums_test"
-  (let ((kicks (data (gethash :kicks *soundfiles*)))
-	(snares (data (gethash :snares *soundfiles*)))
-	(hats (data (gethash :hats *soundfiles*))))
-    (fplay 0 20
-      (rhythm (/ .1 2))
-      (metrum 0.15)
-      (hits (section-val time 0 8  10 7  15 11))
-      (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
-      (pallette (cond ((>= accent 5/6) kicks)
-		      ((>= accent 3/6) snares)
-		      (t hats)))
-      (on (cond ((>= accent 5/6) 1)
-		((>= accent 3/6) (if (>= (random 10) 3) 1 0))
-		(t (if (>= (random 10) 5) 1 0))))
-      ;;(humanize (setf rhythm (+ rhythm (- (random 0.002) .001))))
-      (duration (* rhythm 3))
-      (sound (nth (random 2) pallette))
-      (amp (* (expt accent 2) on))
-      (amp-env '(0 0  1 1  99 1  100 0))
-      (degree (random 90)))))
+
 
 ;; EOF drums.lsp
