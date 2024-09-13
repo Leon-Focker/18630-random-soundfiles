@@ -77,12 +77,36 @@
     ;;(out-channels 4)
     (degree 0 90)))
 
+;; *** pulse variations
+
+(loop for k in '(6 7 8 9) do
+  (wsound (name-with-var "drums/pulse_evolving_original" k)
+    (fplay 0 48
+      (rhythm .05)
+      (hits k)
+      (metrum (* rhythm 3))
+      (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+      (sound (nth-mod 11 (data (gethash :recov *soundfiles*))))
+      (on (cond ((>= accent 5/6) 1)
+		((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+		(t (if (>= (mod time .5) .25) 1 0))))
+      (start (mod (cond ((>= accent 5/6) 0)
+			((>= accent 3/6) 2)
+			(t 5))
+		  (soundfile-duration (path sound)))
+	     0)
+      (duration 0.001)
+      (amp (* (expt accent 2) on))
+      (amp-env '(0 0  1 1  33 1  100 0))
+      ;;(out-channels 4)
+      (degree 0 90))))
+
 ;; *** Sub
-(wsound "drums/sub_evolving"
+(wsound "drums/sub_evolving_11"
   (let ((sounds (data (gethash :recov *soundfiles*))))
     (fplay 0 48
       (rhythm .05)
-      (hits 8)
+      (hits 11)
       (metrum (* rhythm 3))
       (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
       (sound (nth-mod 38 sounds))
@@ -98,6 +122,27 @@
       (amp-env '(0 0  1 1  33 1  100 0))
       ;;(out-channels 4)
       (degree 0 90))))
+
+;; *** game evolving
+(wsound "drums/game_evolving_7"
+  (fplay 0 48
+    (rhythm .05)
+    (hits 7)
+    (metrum (* rhythm 3))
+    (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+    (file (format nil "~a~a" *bleeps-src-dir* "pads/game_2_0.wav"))
+    (on (cond ((>= accent 5/6) 1)
+	      ((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+	      (t (if (>= (mod time .5) .25) 1 0))))
+    (start (mod (cond ((>= accent 5/6) 0)
+		      ((>= accent 3/6) (/ time 2))
+		      (t time))
+		(soundfile-duration file)))
+    (duration (* rhythm 8))
+    (amp (* (expt accent 2) on))
+    (amp-env '(0 0  1 1  33 1  100 0))
+    ;;(out-channels 4)
+    (degree 0 90)))
 
 ;; ** slowdown
 
@@ -176,7 +221,7 @@
 
 ;; ** odd metres
 
-;; *** simple drums evolving
+;; *** simple drums 
 (wsound "drums/drums_odd"
   (let ((sounds (data (gethash :loops *soundfiles*))))
     (fplay 0 50
