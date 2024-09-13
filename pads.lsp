@@ -306,6 +306,41 @@
       (amp-env '(0 0  1 1  99 1  100 0))
       (degree 0 90))))
 
+;; *** game sub
+
+(wsound "pads/game_2_sub"
+  (let* ((start-time 0)
+	 (end-time 40)
+	 (sounds (data (gethash :recov *soundfiles*))))
+    (fplay start-time end-time
+;;;;  rhythm 
+      (duration .5)
+      (rhythm (section-val time
+			   0 1/12
+			   21 2/12
+			   31 4/9)
+	      (section-val time2
+			   0 1/6
+			   29 3/12
+			   31 4/9))
+      (hits (section-val time
+			 0 8
+			 8 11
+			 19 5
+			 31 11)
+	    (section-val time2
+			 0 11
+			 13 7
+			 22.5 13
+			 31 11))
+;;;;  blackbox
+      (accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
+	      (/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
+      (sound (nth-mod 38 sounds))
+      (amp (- 1 accent) (- 1 accent2))
+      (amp-env '(0 0  1 1  99 1  100 0))
+      (degree 0 90))))
+
 ;; gamey  28 30 31 32 33
 
 
