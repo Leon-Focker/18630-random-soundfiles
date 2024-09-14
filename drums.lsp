@@ -145,6 +145,8 @@
     ;;(out-channels 4)
     (degree 0 90)))
 
+;; ** noise variations
+
 ;; *** noise
 (loop for f in '(1 2 4) do
   (loop for k in '(7 8 9 10 11) do
@@ -175,7 +177,7 @@
 	  (degree 0))))))
 
 ;; *** Sub 2
-(loop for k in '(3 4 5 6 7 8) do
+(loop for k in '(3 4 6 7) do
   (wsound (name-with-var "drums/sub2_evolving" k)
     (let ((sounds (data (gethash :recov *soundfiles*))))
       (fplay 0 48
@@ -196,6 +198,52 @@
 	(amp-env '(0 0  1 1  33 1  100 0))
 	(out-channels 1)
 	(degree 0)))))
+
+;; *** drums
+(loop for k in '(7 8 9 10 11) do
+  (wsound (name-with-var "drums/drums_evolving" k)
+    (let ((sounds (data (gethash :loops *soundfiles*))))
+      (fplay 0 48
+	(rhythm .1)
+	(hits k)
+	(metrum (* rhythm 3))
+	(accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+	(sound (nth-mod (nth-mod i (procession 20 (round (dry-wet 4 17 line)))) sounds))
+	(on (cond ((>= accent 5/6) 1)
+		  ((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+		  (t (if (>= (mod time .5) .25) 1 0))))
+	(start (mod (cond ((>= accent 5/6) 0)
+			  ((>= accent 3/6) 2)
+			  (t 5))
+		    (soundfile-duration (path sound))))
+	(duration (* rhythm 3))
+	(amp (* (expt accent 2) on))
+	(amp-env '(0 0  1 1  33 1  100 0))
+	(out-channels 1)
+	(degree 0 90)))))
+
+;; *** pulse
+
+(loop for k in '(7 8 9 10 11) do
+  (wsound (name-with-var "drums/noise_pulse_evolving" k)
+    (fplay 0 48
+      (rhythm .1)			; 0.5
+      (hits k)
+      (metrum (* rhythm 3))
+      (accent (- 1 (/ (get-beat-prox (/ time hits metrum) 6) 6)))
+      (sound (nth-mod 11 (data (gethash :recov *soundfiles*))))
+      (on (cond ((>= accent 5/6) 1)
+		((>= accent 3/6) (if (>= (mod time .3) .1) 1 0))
+		(t (if (>= (mod time .5) .25) 1 0))))
+      (start (mod (cond ((>= accent 5/6) 0)
+			((>= accent 3/6) 2)
+			(t 5))
+		  (soundfile-duration (path sound))))
+      (duration 0.001)
+      (amp (* 1 on))
+      (amp-env '(0 0  1 1  33 1  100 0))
+      (out-channels 1)
+      (degree 0))))
 
 ;; ** slowdown
 
