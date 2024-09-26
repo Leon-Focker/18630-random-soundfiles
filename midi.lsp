@@ -26,8 +26,8 @@
 ;; ** light
 
 ;; *** polyphonic-to-linear-triggers
-(defun polyphonic-to-linear-triggers (input-midi-file black-note new-notes)
-  (let* ((midi-data (midi-to-list input-midi-file))
+(defun polyphonic-to-linear-triggers (input-midi-file black-note new-notes &optional track)
+  (let* ((midi-data (midi-to-list input-midi-file track))
 	 (sorted-midi-data '())
 	 (start-and-end-times '())
 	 (known-notes '())
@@ -76,8 +76,16 @@
 	  finally (lists-to-midi notes durs starts
 				 :file (format nil "~a~a" input-midi-file "-linear.mid")))))
 
+#|
 (lists-to-midi '(e4 e4 e5) '(.75) '(0 1 .5)
 	       :file (format nil "~a~a" *bleeps-src-dir* "midi/test.mid"))
 
+(polyphonic-to-linear-triggers (format nil "~a~a" *bleeps-src-dir* "midi/test.mid") 0 '(5))
+|#
+
+;; *** polyrhythms
+
+(polyphonic-to-linear-triggers
+ (format nil "~a~a" *bleeps-src-dir* "midi/poly1.mid") 0 '(10) 1)
 
 ;; EOF midi.lsp
