@@ -64,7 +64,9 @@
 			       (note (cond ((> note-index (length new-notes))
 					    (error "polyphonic-to-linear-triggers did something that shouldn't ever happen"))
 					   ((= note-index (length new-notes))
-					    (setf new-notes (append new-notes (list (1+ (car (last new-notes))))))
+					    (setf new-notes
+						  (append new-notes
+							  (list (1+ (car (last new-notes))))))
 					    (nth note-index new-notes))
 					   (t (nth note-index new-notes)))))
 			  (push (list time note duration) result))))))
