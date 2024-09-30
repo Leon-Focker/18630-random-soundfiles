@@ -270,6 +270,62 @@
 	(amp-env '(0 0  1 1  99 1  100 0))
 	(degree 0 90)))))
 
+;; *** thicken game 2
+
+(let ((k 0))
+  (wsound (name-with-var "pads/game_2.5" k)
+    (let* ((start-time 0)
+	   (end-time 40)
+	   (sounds (append (data (gethash :recov5 *soundfiles*))
+			   (list (gethash :stille *soundfiles*)))))
+      (fplay start-time end-time
+;;;;  rhythm 
+	(duration .5)
+	(rhythm (section-val time
+			     0 1/9
+			     21 2/12
+			     31 4/9)
+		(section-val time2
+			     0 1/6
+			     29 3/12
+			     31 4/9))
+        (hits (section-val time
+			   0 7;8
+			   8 10;11
+			   19 4;5
+			   31 10) ;11
+	      (section-val time2
+			   0 12;11
+			   13 6;7
+			   22.5 12;13
+			   31 12)) ;11
+;;;;  blackbox
+	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4)
+		(/ (get-beat-prox (/ (- time2 start-time) hits2 rhythm2) 4) 4))
+	(sound-n (section-val time
+			      0    (if (< accent .7) 15 19)
+			      2.7  (cond ((< accent .7) 17) ((< accent .9) 15) (t 19))
+			      5    (cond ((< accent .7) 19) ((< accent .9) 18) (t 15))
+			      6    (if (< accent .5) 12 18)			      
+			      14   (if (< accent .7) 24 25)
+			      18   (if (< accent .5) 26 25)
+			      25   (if (< accent .3) 26 27)
+			      36   (if (< accent .3) 13 26))
+		 (section-val time2
+			      0    (if (< accent2 .7) 15 19)
+			      2.7  (cond ((< accent2 .7) 18) ((< accent2 .9) 19) (t 18))
+			      4    (cond ((< accent2 .7) 17) ((< accent2 .9) 15) (t 19))
+			      5.5  (if (< accent2 .7) 33 19)
+			      6    23
+			      14   (if (< accent2 .7) 26 24)
+			      29   (if (< accent2 .3) (1- (length sounds)) 26)
+			      34   (if (< accent2 .3) 26 18)))
+	(sound (nth-mod sound-n sounds)
+	       (nth-mod sound-n2 sounds))
+	(amp (- 1 accent) (- 1 accent2))
+	(amp-env '(0 0  1 1  99 1  100 0))
+	(degree 0 90)))))
+
 
 ;; *** game pulse
 
