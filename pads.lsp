@@ -361,5 +361,26 @@
       (sound (nth-mod i sorted1))
       (duration (* rhythm 3))
       (degree (random 90)))))
- 
+
+;; ** alternative dreams
+
+(let ((start-time 0)
+      (end-time 120))
+  (loop for k in '(23 26 31 33)
+	and l in '(70 19.5 35.5 27.5)
+	and m in '(3 8 9 12)
+	and n in '(67.5 75.5 83.5 91.5) do
+    (wsound (name-with-var "pads/alt_dreamy" k)
+      (fplay start-time end-time
+;;;;  rhythm 
+	(duration .5)
+	(rhythm (if (< time n) 1/24 1/36))
+	;(hits (if (< time 43.5) (if (< time l) 5 m) 4))
+	(hits (if (< time l) 5 (if (< time 43.5) m 3)))
+;;;;  blackbox
+	(accent (/ (get-beat-prox (/ (- time start-time) hits rhythm) 4) 4))
+	(sound (nth-mod k (data (gethash :recov5 *soundfiles*))))
+	(amp (- 1 accent))
+	(amp-env '(0 0  1 1  99 1  100 0))))))
+
 ;; EOF pads.lsp
