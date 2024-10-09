@@ -26,6 +26,11 @@
 ;; ** light
 
 ;; *** polyphonic-to-linear-triggers
+;;; a midi file that controlls lights via a light pult must be linear (meaning
+;;; only one note at a time) but when composing it might make sense to create
+;;; polyphonic midi files. This should convert the letter to the former.
+;;; The timing seems to be a bit off for long files, which is probably due to the
+;;; import-events function from cm...
 (defun polyphonic-to-linear-triggers (input-midi-file black-note new-notes &optional track)
   (let* ((midi-data (midi-to-list input-midi-file track))
 	 (sorted-midi-data '())
